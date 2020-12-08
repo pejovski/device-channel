@@ -6,13 +6,21 @@ import (
 	"github.com/nats-io/nats.go"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
 func main() {
-	nc, err := nats.Connect(nats.DefaultURL)
+	time.Sleep(time.Second * 2)
+
+	natsURI := os.Getenv("NATS_URI")
+	if natsURI == "" {
+		natsURI = nats.DefaultURL
+	}
+
+	nc, err := nats.Connect(natsURI)
 	if err != nil {
-		log.Fatal("Cant connect to NATS")
+		log.Fatalf("Cant connect to %s NATS because %s", natsURI, err)
 	}
 	defer nc.Close()
 
@@ -36,5 +44,5 @@ func (h *Handler) command(c echo.Context) error {
 	if err != nil {
 		return c.String(http.StatusInternalServerError, fmt.Sprintf("Failed to send command because %s", err))
 	}
-	return c.String(http.StatusOK, fmt.Sprintf("command '%s' from device '%s' was delivered", command, id))
+	return c.String(http.StatusOK, fmt.Sprintf("command '%s' from device '%s' was delivered on %s", command, id, time.Now().Format("2006-01-02 15:04:05")))
 }

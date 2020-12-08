@@ -1,5 +1,38 @@
 version: "3"
 services:
+  channel:
+    build:
+      context: .
+      dockerfile: channel/Dockerfile
+    container_name: "channel"
+    environment:
+      NATS_URI: nats://nats-streaming:4222
+    ports:
+      - "8005:8005"
+    depends_on:
+      - nats-streaming
+  sleep:
+    build:
+      context: .
+      dockerfile: sleep/Dockerfile
+    container_name: "sleep"
+    environment:
+      NATS_URI: nats://nats-streaming:4222
+    ports:
+      - "8006:8006"
+    depends_on:
+      - nats-streaming
+  device:
+    build:
+      context: .
+      dockerfile: device/Dockerfile
+    container_name: "device"
+    environment:
+      NATS_URI: nats://nats-streaming:4222
+      SLEEP_SERVER_URI: sleep:8006
+    depends_on:
+      - nats-streaming
+      - sleep
   nats-streaming:
     image: nats-streaming
     ports:
