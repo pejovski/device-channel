@@ -1,4 +1,12 @@
-# Device Channel POC
+# Device Channel
+
+Proof of concept for Device Channel & Device Sleep
+
+## Requirements
+
+- docker-compose
+
+## Install and Run
 
 #### Create NATS server, run device-channel and sleep-server:
 
