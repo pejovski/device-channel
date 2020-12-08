@@ -11,8 +11,6 @@ import (
 )
 
 func main() {
-	time.Sleep(time.Second * 5)
-
 	natsURI := os.Getenv("NATS_URI")
 	if natsURI == "" {
 		natsURI = nats.DefaultURL

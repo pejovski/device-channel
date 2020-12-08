@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+const commandTimeout = time.Second * 3
+
 func main() {
 	time.Sleep(time.Second * 2)
 
@@ -28,6 +30,8 @@ func main() {
 
 	e := echo.New()
 	e.GET("/command/:id/:command", handler.command)
+
+	log.Println("Waiting on device commands...")
 	e.Logger.Fatal(e.Start(":8005"))
 }
 
@@ -40,7 +44,7 @@ func (h *Handler) command(c echo.Context) error {
 	command := c.Param("command")
 
 	log.Println(fmt.Sprintf("Send command '%s' from device '%s'", command, id))
-	_, err := h.nats.Request(id, []byte(command), time.Second*60)
+	_, err := h.nats.Request(id, []byte(command), commandTimeout)
 	if err != nil {
 		return c.String(http.StatusInternalServerError, fmt.Sprintf("Failed to send command because %s", err))
 	}

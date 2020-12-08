@@ -110,7 +110,7 @@ func main() {
 	}
 	log.Println("Wakeup signal from device received.")
 
-	log.Println(fmt.Sprintf("Forward command '%s' from device '%s'", string(msg.Data), id))
+	log.Println(fmt.Sprintf("Publish command '%s' to device '%s'", string(msg.Data), id))
 	err = nc.PublishMsg(msg)
 	if err != nil {
 		log.Fatalf("Failed to PublishMsg because %s", err)

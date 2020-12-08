@@ -6,48 +6,35 @@ services:
       dockerfile: channel/Dockerfile
     container_name: "channel"
     environment:
-      NATS_URI: nats://nats-streaming:4222
+      NATS_URI: nats://nats:4222
     ports:
       - "8005:8005"
     depends_on:
-      - nats-streaming
+      - nats
   sleep:
     build:
       context: .
       dockerfile: sleep/Dockerfile
     container_name: "sleep"
     environment:
-      NATS_URI: nats://nats-streaming:4222
+      NATS_URI: nats://nats:4222
     ports:
       - "8006:8006"
     depends_on:
-      - nats-streaming
+      - nats
   device:
     build:
       context: .
       dockerfile: device/Dockerfile
     container_name: "device"
     environment:
-      NATS_URI: nats://nats-streaming:4222
+      NATS_URI: nats://nats:4222
       SLEEP_SERVER_URI: sleep:8006
     depends_on:
-      - nats-streaming
+      - nats
       - sleep
-  nats-streaming:
-    image: nats-streaming
+  nats:
+    image: nats
     ports:
     - 4222:4222
     - 8222:8222
-    command:
-      - "--store"
-      - file
-      - "--dir"
-      - /data/msg
-      - "--max_msgs"
-      - "0"
-      - "--max_bytes"
-      - "0"
-      - "-ma"
-      - "10m"
-    volumes:
-      - "./data:/data"
