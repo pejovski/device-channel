@@ -4,6 +4,7 @@ Proof of concept for Device Channel & Device Sleep
 
 ## Requirements
 
+- docker
 - docker-compose
 
 ## Install and Run
