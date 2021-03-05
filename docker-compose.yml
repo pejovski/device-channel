@@ -34,7 +34,7 @@ services:
       - nats
       - sleep
   nats:
-    image: nats
+    image: nats:2.1.8
     ports:
     - 4222:4222
     - 8222:8222

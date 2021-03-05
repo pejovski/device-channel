@@ -36,7 +36,7 @@ Watch the containers logs in each step.
     docker-compose up nats channel sleep
 
 
-2. Put one device (e.g. ID: 555) on sleeping:
+2. Open new terminal, create a new device (e.g. ID: 555) and put it on sleeping:
 
 
     docker-compose run device ./bin 555
